@@ -6,6 +6,8 @@ import { PeriodProvider } from "@/contexts/period-context"
 import { NavRail } from "@/components/nav/nav-rail"
 import { PeriodSelector } from "@/components/period-selector"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { AssistantPanel } from "@/components/assistant-panel"
+import { getCurrentTenant } from "@/lib/auth"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,7 +20,8 @@ export const metadata: Metadata = {
   description: "Multi-tenant integration dashboard",
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const tenant = await getCurrentTenant()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
@@ -60,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </main>
               </div>
             </div>
+            <AssistantPanel tenantId={tenant.id} />
           </PeriodProvider>
         </Providers>
       </body>
