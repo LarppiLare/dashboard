@@ -1,47 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import { Calendar, CheckSquare, Building2, ExternalLink, AlertCircle } from "lucide-react"
+import { useState, useMemo } from "react"
+import { Calendar, CheckSquare, Building2, ExternalLink, AlertCircle, RefreshCw } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { formatRelativeTime } from "@/lib/formatters"
+import { useInboxMessages } from "@/lib/queries"
+import type { InboxEmail as Email, EmailPriority as Priority, EmailCategory as Category } from "@/lib/types"
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Fallback samples (shown when Gmail isn't connected) ─────────────────────
 
-type Priority = "Critical" | "High" | "Medium" | "Low"
-type Category = "Finance" | "Legal" | "Urgent" | "Deadlines" | "Customer" | "Other"
-
-interface EmailDeadline {
-  date: string
-  description: string
-}
-
-interface ActionItem {
-  id: string
-  text: string
-  done: boolean
-}
-
-interface Email {
-  id: string
-  from: string
-  fromEmail: string
-  subject: string
-  preview: string
-  body: string
-  receivedAt: string
-  priority: Priority
-  category: Category
-  aiSummary: string
-  deadlines: EmailDeadline[]
-  actionItems: ActionItem[]
-  mentionedVendors: string[]
-}
-
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const EMAILS: Email[] = [
+const FALLBACK_EMAILS: Email[] = [
   {
     id: "e1",
     from: "Michael Hartmann",
@@ -176,16 +146,25 @@ const PRIORITY_VARIANT = {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function InboxView() {
-  const [activeCategory, setActiveCategory] = useState<Category>("Deadlines")
+export function InboxView({ tenantId = "default" }: { tenantId?: string }) {
+  const { data, isLoading, isError } = useInboxMessages(tenantId)
+
+  const isLive = !!data?.connected && (data?.messages?.length ?? 0) > 0
+  const EMAILS: Email[] = useMemo(
+    () => (isLive ? data!.messages : FALLBACK_EMAILS),
+    [isLive, data]
+  )
+
+  const initialCategory: Category = useMemo(() => {
+    if (EMAILS.some((e) => e.category === "Deadlines")) return "Deadlines"
+    return EMAILS[0]?.category ?? "Other"
+  }, [EMAILS])
+
+  const [activeCategory, setActiveCategory] = useState<Category>(initialCategory)
   const [selectedEmailId, setSelectedEmailId] = useState<string>(
-    EMAILS.filter((e) => e.category === "Deadlines")[0]?.id ?? EMAILS[0].id
+    EMAILS.filter((e) => e.category === initialCategory)[0]?.id ?? EMAILS[0]?.id ?? ""
   )
-  const [actionItems, setActionItems] = useState<Record<string, boolean>>(
-    Object.fromEntries(
-      EMAILS.flatMap((e) => e.actionItems.map((a) => [a.id, a.done]))
-    )
-  )
+  const [actionItems, setActionItems] = useState<Record<string, boolean>>({})
 
   const categoryCounts = Object.fromEntries(
     CATEGORIES.map(({ name }) => [name, EMAILS.filter((e) => e.category === name).length])
@@ -196,6 +175,31 @@ export function InboxView() {
 
   function toggleAction(id: string) {
     setActionItems((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[calc(100vh-9rem)] items-center justify-center rounded-xl border border-border bg-card shadow-card">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Loading messages from Gmail…
+        </div>
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-[calc(100vh-9rem)] items-center justify-center rounded-xl border border-border bg-card p-8 text-center shadow-card">
+        <div>
+          <AlertCircle className="mx-auto h-6 w-6 text-muted-foreground" aria-hidden="true" />
+          <p className="mt-2 text-sm font-medium text-foreground">Could not load inbox</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Backend offline or Gmail token expired. Reconnect Gmail in Integrations.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (

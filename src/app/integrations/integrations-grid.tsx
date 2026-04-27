@@ -169,19 +169,29 @@ export function IntegrationsGrid({ tenantId }: { tenantId: string }) {
     )
   }
 
-  if (isError) {
+  if (isError && !data) {
     return (
-      <div className="flex flex-col items-center gap-2 rounded-xl border bg-card p-12 text-center shadow-card">
-        <AlertCircle className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
-        <p className="text-sm font-medium text-foreground">Could not load integrations</p>
-        <p className="text-xs text-muted-foreground">
-          Make sure the integration platform is running at localhost:8000.
-        </p>
-        <Button variant="outline" size="sm" className="mt-2 gap-1.5" onClick={() => refetch()}>
-          <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
-          Retry
-        </Button>
-      </div>
+      <>
+        <div className="flex items-center justify-between rounded-lg border bg-amber-50 dark:bg-amber-950/30 px-4 py-2.5 text-sm text-amber-700 dark:text-amber-400 shadow-card">
+          <span>Backend offline — showing available integrations. Connect buttons require the platform running at localhost:8000.</span>
+          <Button variant="outline" size="sm" className="ml-4 gap-1.5 shrink-0" onClick={() => refetch()}>
+            <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+            Retry
+          </Button>
+        </div>
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          {ALL_SERVICES.map((svc) => (
+            <ServiceCard
+              key={svc.key}
+              svc={svc}
+              stats={undefined}
+              tenantId={tenantId}
+              onConnect={handleConnect}
+              onDisconnect={handleDisconnect}
+            />
+          ))}
+        </div>
+      </>
     )
   }
 

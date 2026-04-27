@@ -4,23 +4,14 @@ import { KpiCard } from "@/components/kpi-card"
 import { RevenueChart } from "@/components/revenue-chart"
 import { SalesDonut } from "@/components/sales-donut"
 import { IntegrationsStatus } from "@/components/integrations-status"
+import { LiveDeadlines } from "@/components/live-deadlines"
+import { LiveEmailKpi } from "@/components/live-email-kpi"
+import { RevenueKpi } from "@/components/revenue-kpi"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { PeriodBadge } from "@/components/period-badge"
 
-// These will be replaced with TanStack Query hooks in Step 3 refinement
-// once adapter-specific storage tables are added to the backend.
 const REV_SPARK = [28, 32, 29, 35, 38, 34, 42, 39, 45, 48, 44, 52]
 const CUST_SPARK = [4, 7, 5, 9, 11, 8, 13, 10, 14, 12, 16, 18]
-const EMAIL_SPARK = [9, 7, 11, 8, 6, 9, 12, 8, 7, 10, 9, 7]
-
-const MOCK_DEADLINES = [
-  { date: "Apr 25", event: "Q1 tax filing deadline", priority: "Critical" as const },
-  { date: "Apr 28", event: "Vendor contract renewal — Acme Corp", priority: "High" as const },
-  { date: "May 1", event: "Monthly board report due", priority: "High" as const },
-  { date: "May 3", event: "Payroll processing window", priority: "Medium" as const },
-  { date: "May 7", event: "Software audit response deadline", priority: "Medium" as const },
-]
 
 const MOCK_CUSTOMERS = [
   { name: "Acme Corp", revenue: "$18,400", lastActivity: "2d ago" },
@@ -29,13 +20,6 @@ const MOCK_CUSTOMERS = [
   { name: "Umbrella Ltd", revenue: "$7,200", lastActivity: "Today" },
   { name: "Dunder Mifflin", revenue: "$5,600", lastActivity: "3d ago" },
 ]
-
-const PRIORITY_VARIANT = {
-  Critical: "danger",
-  High: "warning",
-  Medium: "secondary",
-  Low: "secondary",
-} as const
 
 export default async function DashboardPage() {
   const tenant = await getCurrentTenant()
@@ -50,24 +34,14 @@ export default async function DashboardPage() {
 
       {/* Row 1 — KPI tiles */}
       <div className="grid grid-cols-3 gap-4">
-        <KpiCard
-          title="Revenue this period"
-          value="$84,230"
-          deltaPercent={12.5}
-          sparkline={REV_SPARK}
-        />
+        <RevenueKpi tenantId={tenant.id} />
         <KpiCard
           title="New Customers"
           value="142"
           deltaPercent={8.3}
           sparkline={CUST_SPARK}
         />
-        <KpiCard
-          title="Unread Important Emails"
-          value="7"
-          deltaPercent={-14.3}
-          sparkline={EMAIL_SPARK}
-        />
+        <LiveEmailKpi tenantId={tenant.id} />
       </div>
 
       {/* Row 2 — Revenue chart + Deadlines */}
@@ -92,29 +66,8 @@ export default async function DashboardPage() {
             <CardTitle className="text-base">Upcoming Deadlines</CardTitle>
             <p className="text-xs text-muted-foreground">AI-extracted from emails</p>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {MOCK_DEADLINES.map((d) => (
-              <div key={d.event} className="flex items-start gap-2.5">
-                <span className="mt-0.5 min-w-[44px] text-xs font-medium tabular-nums text-muted-foreground">
-                  {d.date}
-                </span>
-                <p className="flex-1 truncate text-xs font-medium text-foreground">
-                  {d.event}
-                </p>
-                <Badge
-                  variant={PRIORITY_VARIANT[d.priority]}
-                  className="shrink-0 text-[10px]"
-                >
-                  {d.priority}
-                </Badge>
-              </div>
-            ))}
-            <Link
-              href="/inbox"
-              className="mt-1 block text-xs font-medium text-primary hover:underline"
-            >
-              See all →
-            </Link>
+          <CardContent>
+            <LiveDeadlines tenantId={tenant.id} />
           </CardContent>
         </Card>
       </div>

@@ -1,6 +1,8 @@
 import { InboxView } from "./inbox-view"
+import { getCurrentTenant } from "@/lib/auth"
 
-export default function InboxPage() {
+export default async function InboxPage() {
+  const tenant = await getCurrentTenant()
   return (
     <div className="flex h-full flex-col gap-4">
       <div>
@@ -9,7 +11,7 @@ export default function InboxPage() {
           Gmail triage with AI-extracted deadlines and action items
         </p>
       </div>
-      <InboxView />
+      <InboxView tenantId={tenant.id} />
     </div>
   )
 }

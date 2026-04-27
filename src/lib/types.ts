@@ -79,3 +79,69 @@ export interface TopCustomer {
   revenue: number
   lastActivity: string | null
 }
+
+// ── Inbox / Gmail-derived ────────────────────────────────────────────────────
+
+export type EmailPriority = "Critical" | "High" | "Medium" | "Low"
+export type EmailCategory = "Finance" | "Legal" | "Urgent" | "Deadlines" | "Customer" | "Other"
+
+export interface InboxEmailDeadline {
+  date: string
+  description: string
+}
+
+export interface InboxActionItem {
+  id: string
+  text: string
+  done: boolean
+}
+
+export interface InboxEmail {
+  id: string
+  from: string
+  fromEmail: string
+  subject: string
+  preview: string
+  body: string
+  receivedAt: string
+  priority: EmailPriority
+  category: EmailCategory
+  aiSummary: string
+  deadlines: InboxEmailDeadline[]
+  actionItems: InboxActionItem[]
+  mentionedVendors: string[]
+}
+
+export interface InboxResponse {
+  messages: InboxEmail[]
+  connected: boolean
+}
+
+export interface DeadlineRow {
+  date: string
+  description: string
+  priority: EmailPriority
+  source_email_id: string
+  source_subject: string
+}
+
+export interface DeadlinesResponse {
+  deadlines: DeadlineRow[]
+}
+
+export interface EmailKpiResponse {
+  unread_important: number
+  total: number
+}
+
+// ── Stripe / Revenue ─────────────────────────────────────────────────────────
+
+export interface RevenueResponse {
+  total_revenue: number
+  currency: string
+  period: string
+  transaction_count: number
+  change_percent: number
+  connected: boolean
+  error: string | null
+}
