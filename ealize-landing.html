@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ealize — Your entire business, revolutionized.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08080F;
+      --bg2: #0D0D1A;
+      --bg3: #111128;
+      --violet: #6B5EFF;
+      --violet-light: #8B80FF;
+      --violet-dim: rgba(107,94,255,0.15);
+      --violet-glow: rgba(107,94,255,0.25);
+      --white: #FFFFFF;
+      --muted: rgba(255,255,255,0.55);
+      --muted2: rgba(255,255,255,0.35);
+      --border: rgba(255,255,255,0.08);
+      --card: rgba(255,255,255,0.04);
+      --card-hover: rgba(255,255,255,0.07);
+      --green: #22C55E;
+      --red: #EF4444;
+      --orange: #F97316;
+      --yellow: #EAB308;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; font-weight: 800; line-height: 1.15; }
+
+    /* ──────────────── SCROLLBAR ──────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--violet-dim); border-radius: 3px; }
+
+    /* ──────────────── NAV ──────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      transition: background 0.3s, backdrop-filter 0.3s, border-bottom 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,15,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--white);
+    }
+    .nav-logomark {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--violet), #9B8FFF);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .nav-wordmark { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; }
+
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-ghost {
+      padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px;
+      background: transparent; color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--violet); background: var(--violet-dim); }
+
+    .btn-primary {
+      padding: 8px 20px; border: none; border-radius: 8px;
+      background: var(--violet); color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--violet-light);
+      box-shadow: 0 0 24px var(--violet-glow);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ──────────────── HERO ──────────────── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 5% 80px; text-align: center; position: relative; overflow: hidden;
+    }
+
+    .hero-bg-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(107,94,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(107,94,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-bg-glow {
+      position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 500px;
+      background: radial-gradient(ellipse at center, rgba(107,94,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+
+    .eyebrow-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(107,94,255,0.12); border: 1px solid rgba(107,94,255,0.3);
+      border-radius: 100px; padding: 6px 14px;
+      font-size: 13px; font-weight: 500; color: var(--violet-light);
+      margin-bottom: 28px;
+    }
+
+    .hero-h1 {
+      font-size: clamp(40px, 6vw, 72px); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 60%, rgba(107,94,255,0.8));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px); color: var(--muted); line-height: 1.7;
+      max-width: 620px; margin: 0 auto 36px;
+    }
+
+    .hero-ctas { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+
+    .btn-primary-lg {
+      padding: 14px 28px; font-size: 16px; border-radius: 10px;
+      background: var(--violet); color: var(--white); border: none;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary-lg:hover {
+      background: var(--violet-light); box-shadow: 0 0 36px var(--violet-glow); transform: translateY(-2px);
+    }
+
+    .btn-ghost-lg {
+      padding: 14px 28px; font-size: 16px; border-radius: 10px;
+      background: transparent; color: var(--white);
+      border: 1px solid var(--border); font-family: 'DM Sans', sans-serif;
+      font-weight: 500; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost-lg:hover { border-color: var(--violet); background: var(--violet-dim); }
+
+    .play-icon {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .play-icon::after {
+      content: ''; border-left: 7px solid currentColor;
+      border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+      margin-left: 2px;
+    }
+
+    .social-proof {
+      color: var(--muted); font-size: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 64px;
+    }
+    .stars { color: #FFC107; letter-spacing: 1px; }
+
+    /* ── Dashboard Mockup ── */
+    .dashboard-wrap {
+      position: relative; max-width: 920px; margin: 0 auto; z-index: 1;
+    }
+    .dashboard-glow {
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 300px;
+      background: radial-gradient(ellipse, rgba(107,94,255,0.35) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .browser-frame {
+      background: #1A1A2E; border-radius: 16px;
+      border: 1px solid rgba(107,94,255,0.25);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 40px 120px rgba(0,0,0,0.8), 0 0 80px rgba(107,94,255,0.2);
+      overflow: hidden; position: relative; z-index: 1;
+    }
+    .browser-bar {
+      background: #141427; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .browser-url {
+      flex: 1; background: rgba(255,255,255,0.06); border-radius: 6px;
+      padding: 4px 12px; font-size: 11px; color: var(--muted2);
+      margin: 0 12px; font-family: monospace;
+    }
+
+    .app-layout { display: flex; height: 380px; }
+
+    .app-sidebar {
+      width: 160px; background: #0F0F22; border-right: 1px solid var(--border);
+      padding: 16px 0; flex-shrink: 0; display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 8px; padding: 0 14px 16px;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px;
+      border-bottom: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .sidebar-logo-mark {
+      width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--violet), #9B8FFF);
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 14px; font-size: 11px; color: var(--muted); cursor: pointer;
+      border-radius: 0; transition: all 0.15s;
+    }
+    .sidebar-item.active { background: var(--violet-dim); color: var(--white); }
+    .sidebar-item svg { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.7; }
+    .sidebar-item.active svg { opacity: 1; }
+
+    .app-main { flex: 1; background: #0C0C1E; overflow: hidden; }
+    .app-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; border-bottom: 1px solid var(--border);
+      background: #0A0A1A;
+    }
+    .tenant-label { font-size: 11px; color: var(--muted); }
+    .tenant-label span { color: var(--white); font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .period-toggle { display: flex; gap: 2px; background: rgba(255,255,255,0.05); border-radius: 6px; padding: 2px; }
+    .period-btn { padding: 3px 8px; font-size: 10px; border-radius: 4px; cursor: pointer; color: var(--muted); }
+    .period-btn.active { background: var(--violet); color: var(--white); }
+    .date-range { font-size: 10px; color: var(--muted); background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 5px; }
+
+    .app-content { padding: 14px 16px; }
+    .page-title { font-size: 16px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 2px; }
+    .page-sub { font-size: 10px; color: var(--muted); margin-bottom: 12px; }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+    .kpi-card {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+    }
+    .kpi-label { font-size: 9px; color: var(--muted); margin-bottom: 4px; }
+    .kpi-value { font-size: 16px; font-family: 'Syne', sans-serif; font-weight: 800; margin-bottom: 3px; }
+    .kpi-change { font-size: 9px; display: flex; align-items: center; gap: 3px; }
+    .up { color: var(--green); } .dn { color: var(--red); }
+
+    .chart-section {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+    }
+    .chart-title { font-size: 10px; font-weight: 700; font-family: 'Syne', sans-serif; margin-bottom: 6px; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+    .chart-bar-group { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; }
+    .bar-stack { width: 100%; border-radius: 3px 3px 0 0; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .bar-saas { background: #6B5EFF; }
+    .bar-services { background: #9B8FFF; }
+    .bar-other { background: rgba(155,143,255,0.4); }
+    .chart-label { font-size: 8px; color: var(--muted2); }
+
+    /* ── Floating Chips ── */
+    .chip {
+      position: absolute; background: rgba(15,15,35,0.95);
+      border: 1px solid rgba(107,94,255,0.35); border-radius: 20px;
+      padding: 6px 12px; font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      animation: chipFloat 0.8s ease both;
+      z-index: 10;
+    }
+    .chip-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .chip1 { top: 15%; left: -8%; --d: 0s; }
+    .chip2 { top: 38%; right: -9%; --d: 0.15s; }
+    .chip3 { bottom: 20%; left: -5%; --d: 0.3s; }
+    .chip4 { bottom: 10%; right: -6%; --d: 0.45s; }
+
+    @keyframes chipFloat {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ──────────────── LOGOS ──────────────── */
+    #logos {
+      padding: 56px 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .logos-label { font-size: 12px; font-weight: 500; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 32px; }
+    .logos-row { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .logo-word { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: rgba(255,255,255,0.22); letter-spacing: -0.02em; }
+
+    /* ──────────────── PROBLEM ──────────────── */
+    #problem { padding: 100px 5%; text-align: center; }
+    .section-h2 { font-size: clamp(28px, 4vw, 48px); margin-bottom: 16px; }
+    .section-sub { color: var(--muted); font-size: 18px; max-width: 560px; margin: 0 auto 56px; }
+
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 860px; margin: 0 auto 48px; }
+    .pain-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 28px 24px; text-align: left; transition: background 0.2s, border-color 0.2s;
+    }
+    .pain-card:hover { background: var(--card-hover); border-color: rgba(107,94,255,0.25); }
+    .pain-icon { font-size: 28px; margin-bottom: 14px; }
+    .pain-card h3 { font-size: 15px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: var(--white); }
+
+    .callout-line { font-size: clamp(20px, 3vw, 30px); font-family: 'Syne', sans-serif; font-weight: 800; color: var(--violet-light); }
+
+    /* ──────────────── FEATURES ──────────────── */
+    #features { padding: 100px 5%; }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--violet); margin-bottom: 14px; }
+
+    .features-intro { margin-bottom: 72px; }
+
+    .feature-block {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+      max-width: 1100px; margin: 0 auto 80px;
+    }
+    .feature-block.reverse { direction: rtl; }
+    .feature-block.reverse > * { direction: ltr; }
+
+    .feat-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .feat-title { font-size: clamp(22px, 3vw, 32px); margin-bottom: 16px; }
+    .feat-body { color: var(--muted); line-height: 1.75; font-size: 16px; margin-bottom: 20px; }
+    .feat-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 4px 10px; background: rgba(107,94,255,0.1); border: 1px solid rgba(107,94,255,0.2);
+      border-radius: 100px; font-size: 11px; color: var(--violet-light); font-weight: 500;
+    }
+
+    /* Mini mockups */
+    .mini-mockup {
+      background: #0F0F22; border: 1px solid rgba(107,94,255,0.2); border-radius: 14px;
+      padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(107,94,255,0.08);
+      position: relative; overflow: hidden;
+    }
+    .mini-mockup::before {
+      content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(107,94,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .mini-kpi-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .mini-kpi { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+    .mini-kpi-label { font-size: 8px; color: var(--muted2); margin-bottom: 3px; }
+    .mini-kpi-value { font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 800; }
+    .mini-kpi-change { font-size: 8px; }
+
+    .mini-chart { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+    .mini-chart-title { font-size: 9px; color: var(--muted); margin-bottom: 8px; }
+    .mini-chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 48px; }
+    .mini-bar-g { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .mini-bar { width: 100%; border-radius: 2px 2px 0 0; }
+    .mini-bar-lbl { font-size: 7px; color: var(--muted2); }
+
+    /* Kanban mockup */
+    .kanban-board { display: flex; gap: 8px; overflow: hidden; }
+    .kanban-col { flex: 1; min-width: 0; }
+    .kanban-col-hd { font-size: 8px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .kanban-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; margin-bottom: 5px; }
+    .kanban-company { font-size: 9px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kanban-value { font-size: 8px; color: var(--muted); }
+    .badge { display: inline-block; padding: 2px 5px; border-radius: 4px; font-size: 7px; font-weight: 700; margin-top: 3px; }
+    .badge-critical { background: rgba(239,68,68,0.2); color: #EF4444; }
+    .badge-high { background: rgba(249,115,22,0.2); color: #F97316; }
+    .badge-medium { background: rgba(234,179,8,0.2); color: #EAB308; }
+
+    /* Inbox mockup */
+    .inbox-layout { display: flex; gap: 8px; height: 180px; overflow: hidden; }
+    .inbox-list { width: 38%; border-right: 1px solid var(--border); padding-right: 8px; }
+    .inbox-tab { font-size: 8px; font-weight: 700; color: var(--muted2); text-transform: uppercase; padding: 0 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+    .inbox-item { padding: 5px 6px; border-radius: 5px; margin-bottom: 3px; cursor: pointer; }
+    .inbox-item.active-inbox { background: var(--violet-dim); }
+    .inbox-sender { font-size: 8px; font-weight: 700; }
+    .inbox-preview { font-size: 7px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .inbox-prio { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 7px; font-weight: 700; margin-top: 2px; }
+
+    .inbox-main { flex: 1; overflow: hidden; }
+    .inbox-subject { font-size: 9px; font-weight: 700; margin-bottom: 4px; }
+    .inbox-ai-pill { background: rgba(107,94,255,0.15); border: 1px solid rgba(107,94,255,0.25); border-radius: 4px; padding: 4px 6px; font-size: 7px; color: var(--violet-light); margin-bottom: 6px; line-height: 1.5; }
+    .inbox-checklist { font-size: 7px; color: var(--muted); display: flex; flex-direction: column; gap: 3px; }
+    .check-item { display: flex; align-items: center; gap: 4px; }
+    .check-box { width: 8px; height: 8px; border: 1px solid rgba(255,255,255,0.2); border-radius: 2px; flex-shrink: 0; }
+
+    /* Coming soon card */
+    .coming-soon-overlay {
+      position: relative;
+    }
+    .cs-badge {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+      border-radius: 100px; padding: 4px 10px; font-size: 11px; color: var(--muted);
+    }
+    .feat-body.muted-text { color: rgba(255,255,255,0.35); }
+    .feat-title.muted-title { color: rgba(255,255,255,0.45); }
+
+    /* ──────────────── AI REVOLUTION ──────────────── */
+    #ai-revolution {
+      padding: 0 5%; margin: 40px 0;
+    }
+    .revolution-card {
+      background: linear-gradient(135deg, #150E3A 0%, #0E0E25 50%, #1A0E35 100%);
+      border: 1px solid rgba(107,94,255,0.3); border-radius: 24px;
+      padding: 80px 60px; text-align: center; position: relative; overflow: hidden;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .revolution-card::before {
+      content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(107,94,255,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .revolution-card h2 { font-size: clamp(28px, 4.5vw, 52px); margin-bottom: 20px; position: relative; }
+    .revolution-card p { color: var(--muted); font-size: 18px; max-width: 680px; margin: 0 auto 40px; line-height: 1.75; position: relative; }
+    .stat-row { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; margin-bottom: 40px; position: relative; }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 36px; font-family: 'Syne', sans-serif; font-weight: 800; color: var(--violet-light); margin-bottom: 4px; }
+    .stat-desc { font-size: 13px; color: var(--muted); }
+    .bold-close { font-size: clamp(16px, 2.5vw, 20px); font-family: 'Syne', sans-serif; font-weight: 700; max-width: 640px; margin: 0 auto 36px; line-height: 1.5; position: relative; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; background: var(--white); color: #0D0D1A;
+      border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+    /* ──────────────── HOW IT WORKS ──────────────── */
+    #how-it-works { padding: 100px 5%; text-align: center; }
+    .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; max-width: 960px; margin: 60px auto 0; }
+    .step-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 32px 28px; text-align: left; position: relative;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .step-card:hover { border-color: rgba(107,94,255,0.3); background: var(--card-hover); }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
+      color: rgba(107,94,255,0.25); line-height: 1; margin-bottom: 12px;
+    }
+    .step-icon { font-size: 24px; margin-bottom: 12px; }
+    .step-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .step-body { color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .step-connector {
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(107,94,255,0.4); font-size: 24px; align-self: center;
+    }
+
+    /* ──────────────── INTEGRATIONS ──────────────── */
+    #integrations { padding: 100px 5%; text-align: center; }
+    .integration-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; max-width: 900px; margin: 48px auto 0; }
+    .integration-tile {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 28px 20px; text-align: center; transition: border-color 0.2s, background 0.2s;
+    }
+    .integration-tile:hover { border-color: rgba(107,94,255,0.3); background: var(--card-hover); }
+    .integration-logo {
+      width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
+    }
+    .integration-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .status-live {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 100px; padding: 3px 9px; font-size: 11px; color: var(--green); font-weight: 600;
+    }
+    .status-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .status-soon {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      border-radius: 100px; padding: 3px 9px; font-size: 11px; color: var(--muted); font-weight: 500;
+    }
+
+    /* ──────────────── PRICING ──────────────── */
+    #pricing { padding: 100px 5%; text-align: center; }
+    .pricing-toggle-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 24px 0 48px; }
+    .toggle-label { font-size: 14px; color: var(--muted); }
+    .toggle-label.active-toggle { color: var(--white); font-weight: 600; }
+    .toggle-switch {
+      width: 44px; height: 24px; background: var(--violet); border-radius: 100px;
+      cursor: pointer; position: relative; border: none;
+      transition: background 0.2s;
+    }
+    .toggle-switch::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: 50%; background: white;
+      transition: transform 0.2s;
+    }
+    .toggle-switch.annual::after { transform: translateX(20px); }
+    .save-badge {
+      background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 100px; padding: 2px 8px; font-size: 11px; color: var(--green); font-weight: 600;
+    }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .pricing-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 36px 32px; text-align: left; position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pricing-card.popular {
+      border-color: var(--violet); background: rgba(107,94,255,0.06);
+      box-shadow: 0 0 40px rgba(107,94,255,0.15);
+    }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--violet); border-radius: 100px; padding: 4px 16px;
+      font-size: 12px; font-weight: 700; white-space: nowrap;
+    }
+    .plan-name { font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .plan-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 44px; line-height: 1; margin-bottom: 6px; }
+    .plan-price span { font-size: 20px; }
+    .plan-price small { font-size: 16px; color: var(--muted); font-weight: 400; }
+    .plan-price .original { font-size: 22px; text-decoration: line-through; color: var(--muted); margin-right: 8px; }
+    .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.8); }
+    .check-violet { color: var(--violet); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .plan-cta {
+      display: block; width: 100%; padding: 13px; border-radius: 10px; text-align: center;
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
+    }
+    .plan-cta.filled { background: var(--violet); color: var(--white); border: none; }
+    .plan-cta.filled:hover { background: var(--violet-light); box-shadow: 0 0 24px var(--violet-glow); }
+    .plan-cta.outline { background: transparent; border: 1px solid var(--border); color: var(--white); }
+    .plan-cta.outline:hover { border-color: var(--violet); background: var(--violet-dim); }
+
+    /* ──────────────── FINAL CTA ──────────────── */
+    #cta { padding: 100px 5%; text-align: center; }
+    .cta-card {
+      background: linear-gradient(135deg, #120B30 0%, #0E0E22 100%);
+      border: 1px solid rgba(107,94,255,0.25); border-radius: 24px;
+      padding: 80px 60px; max-width: 760px; margin: 0 auto;
+      position: relative; overflow: hidden;
+    }
+    .cta-card::before {
+      content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 350px;
+      background: radial-gradient(ellipse, rgba(107,94,255,0.2) 0%, transparent 70%);
+    }
+    .cta-card h2 { font-size: clamp(28px, 4vw, 46px); margin-bottom: 14px; position: relative; }
+    .cta-card p { color: var(--muted); font-size: 17px; margin-bottom: 36px; position: relative; }
+    .cta-buttons { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; position: relative; }
+    .cta-fine { font-size: 12px; color: var(--muted2); position: relative; }
+    .cta-fine span::after { content: ' · '; }
+    .cta-fine span:last-child::after { content: ''; }
+
+    /* ──────────────── FOOTER ──────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 60px 5% 32px;
+    }
+    .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand { }
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; text-decoration: none; color: var(--white); }
+    .footer-tagline { font-size: 14px; color: var(--muted); max-width: 220px; line-height: 1.6; }
+    .footer-col h4 { font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 14px; color: var(--muted); text-decoration: none; margin-bottom: 10px; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 24px; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 13px; color: var(--muted2); }
+    .social-icons { display: flex; gap: 16px; }
+    .social-icon {
+      width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 700;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-icon:hover { border-color: var(--violet); color: var(--violet-light); }
+
+    /* ──────────────── MODAL ──────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--bg2); border: 1px solid rgba(107,94,255,0.3); border-radius: 18px;
+      padding: 32px; width: 90%; max-width: 640px; position: relative;
+      transform: translateY(20px); transition: transform 0.3s;
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
+      background: rgba(255,255,255,0.08); border: none; border-radius: 8px;
+      color: var(--white); cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.14); }
+    .modal-title { font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 6px; }
+    .modal-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .video-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 10px; overflow: hidden; }
+    .video-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0F0F25, #1A0E35);
+      gap: 16px;
+    }
+    .video-play-btn {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--violet); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .video-play-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px rgba(107,94,255,0.5); }
+    .video-play-btn::after {
+      content: ''; border-left: 22px solid white;
+      border-top: 13px solid transparent; border-bottom: 13px solid transparent;
+      margin-left: 4px;
+    }
+    .video-placeholder p { color: var(--muted); font-size: 14px; }
+
+    /* ──────────────── SCROLL ANIMATIONS ──────────────── */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.1s; }
+    .fade-up.d2 { transition-delay: 0.2s; }
+    .fade-up.d3 { transition-delay: 0.3s; }
+    .fade-up.d4 { transition-delay: 0.4s; }
+
+    /* ──────────────── RESPONSIVE ──────────────── */
+    @media (max-width: 900px) {
+      .feature-block { grid-template-columns: 1fr; gap: 32px; }
+      .feature-block.reverse { direction: ltr; }
+      .footer-main { grid-template-columns: 1fr 1fr; }
+      .revolution-card { padding: 48px 28px; }
+      .cta-card { padding: 48px 28px; }
+      .stat-row { gap: 28px; }
+    }
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .chip1, .chip3 { left: -4%; }
+      .chip2, .chip4 { right: -4%; }
+      .chip { font-size: 10px; padding: 5px 9px; }
+      .footer-main { grid-template-columns: 1fr; gap: 32px; }
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .btn-primary-lg, .btn-ghost-lg { text-align: center; justify-content: center; }
+      .kanban-board { overflow-x: auto; }
+    }
+    @media (max-width: 480px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .app-sidebar { width: 120px; }
+      .sidebar-item span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ───────── NAV ───────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logomark">E</div>
+    <span class="nav-wordmark">Ealize</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#integrations">Integrations</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="nav-actions">
+    <a href="#cta" class="btn-ghost">Book a Demo</a>
+    <a href="#cta" class="btn-primary">Start Free Trial</a>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+
+  <div class="hero-content">
+    <div class="eyebrow-badge">⚡ AI-Powered Business Intelligence</div>
+    <h1 class="hero-h1">Every metric that matters.<br>Explained by AI.</h1>
+    <p class="hero-sub">Ealize connects your revenue, customers, costs, and inbox into one intelligent dashboard — then tells you exactly what to do next.</p>
+    <div class="hero-ctas">
+      <a href="#cta" class="btn-primary-lg">Start Free Trial →</a>
+      <button class="btn-ghost-lg" id="openDemo">
+        <span class="play-icon" aria-hidden="true"></span>
+        Watch 2-min Demo
+      </button>
+    </div>
+    <div class="social-proof">
+      <span class="stars">★★★★★</span>
+      <span>Trusted by 200+ scaling businesses</span>
+    </div>
+  </div>
+
+  <!-- Dashboard mockup -->
+  <div class="dashboard-wrap">
+    <div class="dashboard-glow"></div>
+
+    <!-- Floating chips -->
+    <div class="chip chip1" style="animation-delay: var(--d)">
+      <div class="chip-dot" style="background:#22C55E"></div>
+      +8.2% MRR
+    </div>
+    <div class="chip chip2" style="animation-delay: var(--d)">
+      <div class="chip-dot" style="background:#EF4444"></div>
+      3 at-risk accounts
+    </div>
+    <div class="chip chip3" style="animation-delay: var(--d)">
+      <div class="chip-dot" style="background:#6B5EFF"></div>
+      Deal closed: $35K
+    </div>
+    <div class="chip chip4" style="animation-delay: var(--d)">
+      <div class="chip-dot" style="background:#EAB308"></div>
+      AI flagged deadline
+    </div>
+
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot" style="background:#FF5F57"></div>
+        <div class="browser-dot" style="background:#FEBC2E"></div>
+        <div class="browser-dot" style="background:#28C840"></div>
+        <div class="browser-url">app.ealize.io/dashboard</div>
+      </div>
+
+      <div class="app-layout">
+        <!-- Sidebar -->
+        <div class="app-sidebar">
+          <div class="sidebar-logo">
+            <div class="sidebar-logo-mark"></div>
+            <span>Ealize</span>
+          </div>
+          <div class="sidebar-item active">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+            <span>Dashboard</span>
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,12 5,7 8,10 12,4 15,6"/></svg>
+            <span>Revenue</span>
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2,14 c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span>Customers</span>
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1"/><polyline points="1,6 8,9 15,6"/></svg>
+            <span>Inbox</span>
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2,14 L2,6 L6,6 L6,14 M7,14 L7,3 L11,3 L11,14 M12,14 L12,8 L16,8"/></svg>
+            <span>Costs</span>
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8,4 L8,8 L11,8"/></svg>
+            <span>Marketing</span>
+          </div>
+        </div>
+
+        <!-- Main area -->
+        <div class="app-main">
+          <div class="app-topbar">
+            <div class="tenant-label">Tenant: <span>Demo Company</span></div>
+            <div class="topbar-right">
+              <div class="period-toggle">
+                <div class="period-btn active">Monthly</div>
+                <div class="period-btn">Weekly</div>
+                <div class="period-btn">Daily</div>
+              </div>
+              <div class="date-range">Apr 5 – May 5, 2026</div>
+            </div>
+          </div>
+
+          <div class="app-content">
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Your business at a glance</div>
+
+            <div class="kpi-row">
+              <div class="kpi-card">
+                <div class="kpi-label">Monthly Recurring Revenue</div>
+                <div class="kpi-value">$28,077</div>
+                <div class="kpi-change up">▲ +3.2% vs prev. period</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Annual Run Rate</div>
+                <div class="kpi-value">$336,924</div>
+                <div class="kpi-change up">▲ +15.4% vs prev. period</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Monthly Churn Rate</div>
+                <div class="kpi-value">2.1%</div>
+                <div class="kpi-change dn">▼ -14.3% vs prev. period</div>
+              </div>
+            </div>
+
+            <div class="chart-section">
+              <div class="chart-title">Revenue Overview — Stacked by stream</div>
+              <div class="chart-bars">
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:62px">
+                    <div class="bar-saas" style="flex:4"></div>
+                    <div class="bar-services" style="flex:2"></div>
+                    <div class="bar-other" style="flex:1"></div>
+                  </div>
+                  <div class="chart-label">Nov</div>
+                </div>
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:68px">
+                    <div class="bar-saas" style="flex:4"></div>
+                    <div class="bar-services" style="flex:2.2"></div>
+                    <div class="bar-other" style="flex:1"></div>
+                  </div>
+                  <div class="chart-label">Dec</div>
+                </div>
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:65px">
+                    <div class="bar-saas" style="flex:4.2"></div>
+                    <div class="bar-services" style="flex:2.1"></div>
+                    <div class="bar-other" style="flex:0.9"></div>
+                  </div>
+                  <div class="chart-label">Jan</div>
+                </div>
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:71px">
+                    <div class="bar-saas" style="flex:4.5"></div>
+                    <div class="bar-services" style="flex:2.3"></div>
+                    <div class="bar-other" style="flex:1.1"></div>
+                  </div>
+                  <div class="chart-label">Feb</div>
+                </div>
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:75px">
+                    <div class="bar-saas" style="flex:4.8"></div>
+                    <div class="bar-services" style="flex:2.4"></div>
+                    <div class="bar-other" style="flex:1.2"></div>
+                  </div>
+                  <div class="chart-label">Mar</div>
+                </div>
+                <div class="chart-bar-group">
+                  <div class="bar-stack" style="height:80px">
+                    <div class="bar-saas" style="flex:5"></div>
+                    <div class="bar-services" style="flex:2.5"></div>
+                    <div class="bar-other" style="flex:1.3"></div>
+                  </div>
+                  <div class="chart-label">Apr</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── LOGOS ───────── -->
+<section id="logos">
+  <div class="logos-label">Powering growth at companies like</div>
+  <div class="logos-row">
+    <span class="logo-word">Acme Corp</span>
+    <span class="logo-word">Globex</span>
+    <span class="logo-word">Initech</span>
+    <span class="logo-word">Umbrella</span>
+    <span class="logo-word">Dunder Mifflin</span>
+    <span class="logo-word">Waystar</span>
+  </div>
+</section>
+
+<!-- ───────── PROBLEM ───────── -->
+<section id="problem">
+  <h2 class="section-h2 fade-up">Your data is everywhere.<br>Your answers are nowhere.</h2>
+  <p class="section-sub fade-up d1">Every tool captures a fragment. Nobody sees the whole picture.</p>
+
+  <div class="pain-grid">
+    <div class="pain-card fade-up d1">
+      <div class="pain-icon">📊</div>
+      <h3>7 disconnected tools, zero unified view</h3>
+    </div>
+    <div class="pain-card fade-up d2">
+      <div class="pain-icon">⏰</div>
+      <h3>Hours wasted building manual reports</h3>
+    </div>
+    <div class="pain-card fade-up d3">
+      <div class="pain-icon">🤷</div>
+      <h3>No idea what's actually driving growth</h3>
+    </div>
+  </div>
+
+  <div class="callout-line fade-up">Ealize fixes all of this. In minutes.</div>
+</section>
+
+<!-- ───────── FEATURES ───────── -->
+<section id="features">
+  <div class="features-intro fade-up" style="text-align:center;max-width:640px;margin:0 auto">
+    <div class="section-label">What Ealize Does</div>
+    <h2 class="section-h2">One platform.<br>Every business signal.</h2>
+  </div>
+
+  <!-- A: Revenue Intelligence -->
+  <div class="feature-block">
+    <div class="fade-up">
+      <div class="feat-label">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,12 5,7 8,10 12,4 15,6"/></svg>
+        Revenue Intelligence
+      </div>
+      <h3 class="feat-title">Know your revenue story in real time</h3>
+      <p class="feat-body">Live MRR, ARR, churn rate, and revenue by product segment — all pulled automatically from Stripe. Spot trends before they become problems.</p>
+      <div class="feat-tags">
+        <span class="tag">Stripe</span><span class="tag">MRR</span><span class="tag">Churn</span><span class="tag">ARR</span>
+      </div>
+    </div>
+    <div class="mini-mockup fade-up d2">
+      <div class="mini-kpi-row">
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">MRR</div>
+          <div class="mini-kpi-value">$28,077</div>
+          <div class="mini-kpi-change up">▲ +3.2%</div>
+        </div>
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">ARR</div>
+          <div class="mini-kpi-value">$336K</div>
+          <div class="mini-kpi-change up">▲ +15.4%</div>
+        </div>
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">Churn</div>
+          <div class="mini-kpi-value">2.1%</div>
+          <div class="mini-kpi-change dn">▼ -14.3%</div>
+        </div>
+      </div>
+      <div class="mini-chart">
+        <div class="mini-chart-title">Revenue Overview — last 6 months</div>
+        <div class="mini-chart-bars">
+          <div class="mini-bar-g"><div class="mini-bar" style="height:28px;background:#6B5EFF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Nov</div></div>
+          <div class="mini-bar-g"><div class="mini-bar" style="height:32px;background:#6B5EFF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Dec</div></div>
+          <div class="mini-bar-g"><div class="mini-bar" style="height:30px;background:#6B5EFF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Jan</div></div>
+          <div class="mini-bar-g"><div class="mini-bar" style="height:36px;background:#6B5EFF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Feb</div></div>
+          <div class="mini-bar-g"><div class="mini-bar" style="height:40px;background:#6B5EFF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Mar</div></div>
+          <div class="mini-bar-g"><div class="mini-bar" style="height:48px;background:#8B80FF;border-radius:2px 2px 0 0"></div><div class="mini-bar-lbl">Apr</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Customer & Pipeline -->
+  <div class="feature-block reverse">
+    <div class="fade-up">
+      <div class="feat-label">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="5" r="3"/><path d="M2,14 c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+        Customer & Pipeline Intelligence
+      </div>
+      <h3 class="feat-title">See every deal, contact, and risk at a glance</h3>
+      <p class="feat-body">Your full HubSpot pipeline rendered as a live Kanban board, with deal values, owner names, and urgency signals. Never miss a hot deal again.</p>
+      <div class="feat-tags">
+        <span class="tag">HubSpot</span><span class="tag">Pipeline</span><span class="tag">Deal Tracking</span>
+      </div>
+    </div>
+    <div class="mini-mockup fade-up d2">
+      <div class="kanban-board">
+        <div class="kanban-col">
+          <div class="kanban-col-hd">Lead</div>
+          <div class="kanban-card"><div class="kanban-company">Helix Tech</div><div class="kanban-value">$8,000</div><span class="badge badge-medium">Medium</span></div>
+          <div class="kanban-card"><div class="kanban-company">DataFlow Ltd</div><div class="kanban-value">$12,000</div><span class="badge badge-high">High</span></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hd">Qualified</div>
+          <div class="kanban-card"><div class="kanban-company">Nexus Corp</div><div class="kanban-value">$22,000</div><span class="badge badge-high">High</span></div>
+          <div class="kanban-card"><div class="kanban-company">Apex Global</div><div class="kanban-value">$18,500</div><span class="badge badge-medium">Medium</span></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hd">Proposal</div>
+          <div class="kanban-card"><div class="kanban-company">Initech Solutions</div><div class="kanban-value">$28,000</div><span class="badge badge-critical">Critical</span></div>
+          <div class="kanban-card"><div class="kanban-company">MetaCorp</div><div class="kanban-value">$35,000</div><span class="badge badge-high">High</span></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hd">Negotiation</div>
+          <div class="kanban-card"><div class="kanban-company">Umbrella Ltd</div><div class="kanban-value">$31,000</div><span class="badge badge-critical">Critical</span></div>
+          <div class="kanban-card"><div class="kanban-company">Phantom Tech</div><div class="kanban-value">$24,000</div><span class="badge badge-high">High</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: AI Inbox Triage -->
+  <div class="feature-block">
+    <div class="fade-up">
+      <div class="feat-label">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="14" height="10" rx="1"/><polyline points="1,6 8,9 15,6"/></svg>
+        AI Inbox Triage
+      </div>
+      <h3 class="feat-title">Your inbox, intelligenced and prioritised</h3>
+      <p class="feat-body">Ealize reads your Gmail and extracts deadlines, action items, and critical signals — automatically categorised as Finance, Legal, Urgent. Never miss an April 25 tax deadline again.</p>
+      <div class="feat-tags">
+        <span class="tag">Gmail</span><span class="tag">AI Extraction</span><span class="tag">Deadlines</span><span class="tag">Action Items</span>
+      </div>
+    </div>
+    <div class="mini-mockup fade-up d2">
+      <div class="inbox-layout">
+        <div class="inbox-list">
+          <div class="inbox-tab">Priority Queue</div>
+          <div class="inbox-item active-inbox">
+            <div class="inbox-sender">Michael Hartmann</div>
+            <div class="inbox-preview">RE: Q1 Tax Filing — Action...</div>
+            <span class="inbox-prio" style="background:rgba(239,68,68,0.15);color:#EF4444">Critical</span>
+          </div>
+          <div class="inbox-item">
+            <div class="inbox-sender">Sandra Walsh</div>
+            <div class="inbox-preview">Service Agreement Renewal...</div>
+            <span class="inbox-prio" style="background:rgba(249,115,22,0.15);color:#F97316">High</span>
+          </div>
+          <div class="inbox-item">
+            <div class="inbox-sender">CEO — Internal</div>
+            <div class="inbox-preview">May 1 Board Report...</div>
+            <span class="inbox-prio" style="background:rgba(249,115,22,0.15);color:#F97316">High</span>
+          </div>
+        </div>
+        <div class="inbox-main">
+          <div class="inbox-subject">RE: Q1 Tax Filing — Action Required by April 25</div>
+          <div class="inbox-ai-pill">
+            🤖 AI: Tax advisor requesting Q1 documents (payroll, expenses, 1099s) by April 25. Hard deadline — late submission incurs penalties.
+          </div>
+          <div style="font-size:8px;color:var(--muted);margin-bottom:6px;font-weight:600">ACTION ITEMS</div>
+          <div class="inbox-checklist">
+            <div class="check-item"><div class="check-box"></div> Gather payroll summaries (Jan–Mar)</div>
+            <div class="check-item"><div class="check-box"></div> Collect expense receipts over $250</div>
+            <div class="check-item"><div class="check-box"></div> Pull contractor records (1099)</div>
+            <div class="check-item"><div class="check-box"></div> Upload to client portal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D: Marketing (Coming Soon) -->
+  <div class="feature-block reverse">
+    <div class="fade-up coming-soon-overlay">
+      <div class="feat-label" style="color:var(--muted2)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8,5 L8,8 L10,10"/></svg>
+        Marketing Attribution
+      </div>
+      <h3 class="feat-title muted-title">Ad performance, meet business outcomes</h3>
+      <p class="feat-body muted-text">Google Ads and Meta Ads integration is coming soon — ROAS, keyword performance, conversion funnels, and creative attribution, all inside Ealize.</p>
+      <div class="feat-tags" style="opacity:0.4">
+        <span class="tag">Google Ads</span><span class="tag">Meta Ads</span><span class="tag">ROAS</span>
+      </div>
+    </div>
+    <div class="mini-mockup fade-up d2" style="opacity:0.55;position:relative">
+      <div class="cs-badge">Coming Soon</div>
+      <div style="display:flex;gap:16px;padding:20px 0">
+        <div style="flex:1;text-align:center">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.08);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:Syne,sans-serif;color:var(--muted)">G</div>
+          <div style="font-size:11px;color:var(--muted)">Google Ads</div>
+          <div style="font-size:9px;color:var(--muted2);margin-top:4px">Campaign ROAS · Keywords</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.08);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:Syne,sans-serif;color:var(--muted)">M</div>
+          <div style="font-size:11px;color:var(--muted)">Meta Ads</div>
+          <div style="font-size:9px;color:var(--muted2);margin-top:4px">Audience · Creative</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── AI REVOLUTION ───────── -->
+<section id="ai-revolution">
+  <div class="revolution-card fade-up">
+    <h2>The businesses winning right now<br>are AI-native.</h2>
+    <p>Companies using AI-powered intelligence platforms are making decisions 4x faster, identifying churn 6 weeks earlier, and closing deals before competitors even know they're open. This is not the future. It's happening today.</p>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-num">4x</div>
+        <div class="stat-desc">faster decisions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6 wks</div>
+        <div class="stat-desc">earlier churn detection</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">40%</div>
+        <div class="stat-desc">less time in spreadsheets</div>
+      </div>
+    </div>
+    <p class="bold-close">"The question isn't whether AI will transform your industry. It's whether you'll be leading it — or playing catch-up."</p>
+    <a href="#cta" class="btn-white">Join the AI-native businesses →</a>
+  </div>
+</section>
+
+<!-- ───────── HOW IT WORKS ───────── -->
+<section id="how-it-works">
+  <div class="section-label fade-up" style="text-align:center">Set up in under 10 minutes</div>
+  <h2 class="section-h2 fade-up">How It Works</h2>
+
+  <div class="steps-row">
+    <div class="step-card fade-up d1">
+      <div class="step-num">01</div>
+      <div class="step-icon">🔗</div>
+      <div class="step-title">Connect your tools</div>
+      <p class="step-body">Link Stripe, HubSpot, and Gmail with one-click OAuth. No code, no engineering ticket, no waiting. Your integrations are live in seconds.</p>
+    </div>
+    <div class="step-card fade-up d2">
+      <div class="step-num">02</div>
+      <div class="step-icon">⚡</div>
+      <div class="step-title">Ealize syncs everything</div>
+      <p class="step-body">AI processes, categorises, and structures your data automatically. Revenue data, pipeline state, inbox signals — all unified, all real-time.</p>
+    </div>
+    <div class="step-card fade-up d3">
+      <div class="step-num">03</div>
+      <div class="step-icon">🎯</div>
+      <div class="step-title">Make better decisions</div>
+      <p class="step-body">Your unified dashboard is live. Act on AI-extracted insights, not spreadsheets. Know what's happening and what to do about it before it's urgent.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── INTEGRATIONS ───────── -->
+<section id="integrations">
+  <div class="section-label fade-up" style="text-align:center">Integrations</div>
+  <h2 class="section-h2 fade-up">Connects with the tools you already use</h2>
+  <p class="section-sub fade-up d1" style="margin-bottom:0">More integrations shipping every month.</p>
+
+  <div class="integration-grid">
+    <div class="integration-tile fade-up d1">
+      <div class="integration-logo" style="background:rgba(107,229,160,0.1);color:#22C55E">$</div>
+      <div class="integration-name">Stripe</div>
+      <span class="status-live">Live</span>
+    </div>
+    <div class="integration-tile fade-up d2">
+      <div class="integration-logo" style="background:rgba(255,90,30,0.1);color:#FF5A1E">H</div>
+      <div class="integration-name">HubSpot</div>
+      <span class="status-live">Live</span>
+    </div>
+    <div class="integration-tile fade-up d3">
+      <div class="integration-logo" style="background:rgba(66,133,244,0.1);color:#4285F4">G</div>
+      <div class="integration-name">Gmail</div>
+      <span class="status-live">Live</span>
+    </div>
+    <div class="integration-tile fade-up d1">
+      <div class="integration-logo" style="background:rgba(255,255,255,0.06);color:var(--muted)">G</div>
+      <div class="integration-name">Google Ads</div>
+      <span class="status-soon">Coming Soon</span>
+    </div>
+    <div class="integration-tile fade-up d2">
+      <div class="integration-logo" style="background:rgba(255,255,255,0.06);color:var(--muted)">M</div>
+      <div class="integration-name">Meta Ads</div>
+      <span class="status-soon">Coming Soon</span>
+    </div>
+    <div class="integration-tile fade-up d3">
+      <div class="integration-logo" style="background:rgba(255,255,255,0.06);color:var(--muted)">X</div>
+      <div class="integration-name">Xero / QuickBooks</div>
+      <span class="status-soon">Coming Soon</span>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── PRICING ───────── -->
+<section id="pricing">
+  <div class="section-label fade-up" style="text-align:center">Pricing</div>
+  <h2 class="section-h2 fade-up">Simple, transparent pricing</h2>
+
+  <div class="pricing-toggle-wrap fade-up d1">
+    <span class="toggle-label active-toggle" id="monthly-lbl">Monthly</span>
+    <button class="toggle-switch" id="pricingToggle" aria-label="Toggle annual pricing"></button>
+    <span class="toggle-label" id="annual-lbl">Annual</span>
+    <span class="save-badge">Save 20%</span>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="pricing-card fade-up d1">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">
+        <span>€</span><span id="price-starter">49</span>
+        <small>/mo</small>
+      </div>
+      <div class="plan-period" id="period-starter">billed monthly</div>
+      <ul class="plan-features">
+        <li><span class="check-violet">✓</span> 1 workspace</li>
+        <li><span class="check-violet">✓</span> Stripe, HubSpot, Gmail integrations</li>
+        <li><span class="check-violet">✓</span> 30-day data history</li>
+        <li><span class="check-violet">✓</span> Core dashboard views</li>
+        <li><span class="check-violet">✓</span> Email support</li>
+      </ul>
+      <a href="#cta" class="plan-cta outline">Get Started</a>
+    </div>
+
+    <!-- Growth (Popular) -->
+    <div class="pricing-card popular fade-up d2">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">
+        <span id="original-growth" style="display:none" class="original">€149</span>
+        <span>€</span><span id="price-growth">149</span>
+        <small>/mo</small>
+      </div>
+      <div class="plan-period" id="period-growth">billed monthly</div>
+      <ul class="plan-features">
+        <li><span class="check-violet">✓</span> 3 workspaces</li>
+        <li><span class="check-violet">✓</span> All integrations (incl. Ads when live)</li>
+        <li><span class="check-violet">✓</span> AI Inbox triage</li>
+        <li><span class="check-violet">✓</span> Unlimited data history</li>
+        <li><span class="check-violet">✓</span> Priority support</li>
+        <li><span class="check-violet">✓</span> Custom alerts & digest emails</li>
+      </ul>
+      <a href="#cta" class="plan-cta filled">Start Free Trial</a>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="pricing-card fade-up d3">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price" style="font-size:36px">Custom</div>
+      <div class="plan-period">tailored to your scale</div>
+      <ul class="plan-features">
+        <li><span class="check-violet">✓</span> Unlimited workspaces</li>
+        <li><span class="check-violet">✓</span> All integrations + custom sources</li>
+        <li><span class="check-violet">✓</span> SSO / SAML</li>
+        <li><span class="check-violet">✓</span> Dedicated onboarding specialist</li>
+        <li><span class="check-violet">✓</span> SLA & uptime guarantee</li>
+        <li><span class="check-violet">✓</span> Custom data retention</li>
+      </ul>
+      <a href="#cta" class="plan-cta outline">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FINAL CTA ───────── -->
+<section id="cta">
+  <div class="cta-card fade-up">
+    <h2>Stop reporting.<br>Start deciding.</h2>
+    <p>Join 200+ businesses that replaced their spreadsheet chaos with Ealize.</p>
+    <div class="cta-buttons">
+      <a href="javascript:void(0)" onclick="handleCTA()" class="btn-primary-lg">Start Free Trial — No card required</a>
+      <a href="javascript:void(0)" onclick="handleCTA()" class="btn-ghost-lg">Book a Demo</a>
+    </div>
+    <div class="cta-fine">
+      <span>14-day free trial</span>
+      <span>Cancel anytime</span>
+      <span>Setup in 10 minutes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="#hero" class="footer-logo">
+        <div class="nav-logomark">E</div>
+        <span class="nav-wordmark">Ealize</span>
+      </a>
+      <p class="footer-tagline">Your entire business, revolutionized.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#features">Features</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#pricing">Pricing</a>
+      <a href="javascript:void(0)">Changelog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="javascript:void(0)">About</a>
+      <a href="javascript:void(0)">Blog</a>
+      <a href="javascript:void(0)">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="javascript:void(0)">Privacy</a>
+      <a href="javascript:void(0)">Terms</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Ealize. All rights reserved.</span>
+    <div class="social-icons">
+      <a href="javascript:void(0)" class="social-icon" aria-label="X (Twitter)">𝕏</a>
+      <a href="javascript:void(0)" class="social-icon" aria-label="LinkedIn">in</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ───────── MODAL ───────── -->
+<div class="modal-overlay" id="demoModal" role="dialog" aria-modal="true" aria-label="Product demo">
+  <div class="modal-box">
+    <button class="modal-close" id="closeModal" aria-label="Close modal">✕</button>
+    <div class="modal-title">Ealize in 2 minutes</div>
+    <div class="modal-sub">See how teams go from scattered tools to AI-powered clarity.</div>
+    <div class="video-container">
+      <div class="video-placeholder">
+        <div class="video-play-btn" aria-hidden="true"></div>
+        <p>2-minute product walkthrough</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Nav scroll glassmorph ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // ── Demo modal ──
+  const modal = document.getElementById('demoModal');
+  document.getElementById('openDemo').addEventListener('click', () => {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── CTA alert ──
+  function handleCTA() {
+    alert('Thanks! We\'ll be in touch.');
+  }
+  document.querySelectorAll('.plan-cta, .btn-primary, .btn-primary-lg').forEach(el => {
+    if (el.href && el.href.includes('#cta')) {
+      el.addEventListener('click', (e) => {
+        if (el.closest('#cta') || el.closest('nav') || el.closest('footer')) return;
+      });
+    }
+  });
+
+  // ── Pricing toggle ──
+  let isAnnual = false;
+  const toggle = document.getElementById('pricingToggle');
+  const monthlyLbl = document.getElementById('monthly-lbl');
+  const annualLbl = document.getElementById('annual-lbl');
+
+  toggle.addEventListener('click', () => {
+    isAnnual = !isAnnual;
+    toggle.classList.toggle('annual', isAnnual);
+    monthlyLbl.classList.toggle('active-toggle', !isAnnual);
+    annualLbl.classList.toggle('active-toggle', isAnnual);
+
+    const starterEl = document.getElementById('price-starter');
+    const growthEl = document.getElementById('price-growth');
+    const origGrowth = document.getElementById('original-growth');
+    const periodStarter = document.getElementById('period-starter');
+    const periodGrowth = document.getElementById('period-growth');
+
+    if (isAnnual) {
+      starterEl.textContent = '39';
+      growthEl.textContent = '119';
+      origGrowth.style.display = 'inline';
+      periodStarter.textContent = 'billed €468/year (save €120)';
+      periodGrowth.textContent = 'billed €1,428/year (save €360)';
+    } else {
+      starterEl.textContent = '49';
+      growthEl.textContent = '149';
+      origGrowth.style.display = 'none';
+      periodStarter.textContent = 'billed monthly';
+      periodGrowth.textContent = 'billed monthly';
+    }
+  });
+
+  // ── Scroll-triggered fade-up ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Floating chips stagger (ensure animation runs after load) ──
+  document.querySelectorAll('.chip').forEach((chip, i) => {
+    chip.style.animationDelay = (i * 0.15) + 's';
+  });
+</script>
+</body>
+</html>
